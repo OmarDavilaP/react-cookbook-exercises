@@ -29,7 +29,7 @@ class TestPopup extends Component{
 
     render(){
         return [
-            <button onClick={this.handlePopup}>Popup</button>,
+            <button key="1" onClick={this.handlePopup}>Popup</button>,
         ];
     }
 }

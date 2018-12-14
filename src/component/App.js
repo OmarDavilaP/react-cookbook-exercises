@@ -5,11 +5,12 @@ import './App.css';
  import ErrorBoundary from './test-creact-book_content/ErrorBoundaries';
 import Home from './Home/Home';
 import Chart from './react-and-c3/Chart';
-import Animation from './animation-fade/Animation';
 import TestPopup from './popup/Test-popup';
 //third party libraries
 import Popup from 'react-popup';
 import './popup/Popup.css';
+import {connect} from 'react-redux';
+
 class App extends Component {
 
   constructor(props){
@@ -42,30 +43,32 @@ class App extends Component {
 
   componentDidMount=()=>{
 
-    // setTimeout(()=>{
-    //   this.setState({test:23});
-    // },1000);
-
-    
+    setTimeout(()=>{
+      this.setState({test:23});
+    },1000);
 
   }
 
+  handleInput=({target:{value}})=>{
+    console.log(value)
+  }
 
   render() {
+    console.log("props with Redux",this.props)
     return (
       <div className="App">
       <ErrorBoundary>
         <h4>{this.state.test}</h4>
-        <Home data={this.state.test}>iTexico</Home>
+        <Home data={{info:{dataTest:this.state.test},events:{input:this.handleInput}}} >iTexico</Home>
         <Chart columns={this.columns} 
         chartType={this.state.chartType} />
             <p>
               Chart Type
-              <button onClick={this.setBarChart}>Bar</button>
-              <button onClick={this.setLineChart}>Line</button>
+              <button  onClick={this.setBarChart}>Bar</button>
+              <button  onClick={this.setLineChart}>Line</button>
             </p>
-       <Animation/>
        <TestPopup data={{name:"Omar",last_name:"Davila"}}></TestPopup>
+
       </ErrorBoundary>
       <Popup/>
       </div>
@@ -74,4 +77,14 @@ class App extends Component {
   }
 }
 
-export default App;
+function mapStateTopProps(state){
+  console.log("state from mapToState",state)
+  return{
+    isMobile:state.device.isMobile
+  }
+}
+function mapDispatchToProps(){
+  return{};
+}
+
+export default connect(mapStateTopProps,mapDispatchToProps)(App);
